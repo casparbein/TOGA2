@@ -40,7 +40,7 @@ EXON_SEP_DUMMY: str = "n"
 PRANK_BEST_PRACTICE: str = "{} -d={} -F -DNA -o={} -seed={} "
 PRANK_FOR_REGULAR_ALN: str = " -iterate=10"
 PRANK_FOR_ANCESTRAL: str = " -once -showanc"
-PRANK_NO_ANCHOR: str = " -noanchors "
+PRANK_NO_ANCHORS: str = " -noanchors "
 PRANK_NO_MAFFT: str = " -nomafft "
 MACSE_BEST_PRACTICE: str = "{} -prog alignSequences -seq {} -out_NT {} -out_AA {}"
 MAGUS_BEST_PRACTICE: str = "{} -i {} --datatype dna -o {}"
@@ -105,6 +105,8 @@ class CodonAligner(CommandLineManager):
         "aa_file",
         "seed",
         "show_ancestors",
+        "no_anchors",
+        "no_mafft",
         "ancestral_seq_dir",
         "aligner_exe",
         "twobit2fa",
@@ -684,7 +686,7 @@ class CodonAligner(CommandLineManager):
                         anc_fa = tmp_fasta_out_path + ".best.anc.fas"
                         anc_dnd = tmp_fasta_out_path + ".best.anc.dnd"
                     if self.no_anchors:
-                        cmd += PRANK_NO_ANCHOR
+                        cmd += PRANK_NO_ANCHORS
                     if self.no_mafft:
                         cmd += PRANK_NO_MAFFT
                     else:
