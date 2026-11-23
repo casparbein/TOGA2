@@ -40,6 +40,8 @@ EXON_SEP_DUMMY: str = "n"
 PRANK_BEST_PRACTICE: str = "{} -d={} -F -DNA -o={} -seed={} "
 PRANK_FOR_REGULAR_ALN: str = " -iterate=10"
 PRANK_FOR_ANCESTRAL: str = " -once -showanc"
+PRANK_NO_ANCHOR: str = " -noanchors "
+PRANK_NO_MAFFT: str = " -nomafft "
 MACSE_BEST_PRACTICE: str = "{} -prog alignSequences -seq {} -out_NT {} -out_AA {}"
 MAGUS_BEST_PRACTICE: str = "{} -i {} --datatype dna -o {}"
 MUSCLE_ALIGN_CMD: str = "muscle -super5 {} -output {}"
@@ -161,6 +163,8 @@ class CodonAligner(CommandLineManager):
         tree: Optional[Union[click.Path, None]],
         amino_acids_output: Optional[Union[click.Path, None]],
         show_ancestors: Optional[bool],
+        no_anchors: Optional[bool],
+        no_mafft: Optional[bool],
         path_to_ancestor_files: Optional[Union[click.Path, None]],
         seed: Optional[str],
         confidence_scores: Optional[Union[click.File, None]],
@@ -195,6 +199,8 @@ class CodonAligner(CommandLineManager):
                 "warning",
             )
         self.show_ancestors: bool = show_ancestors
+        self.no_anchors: bool = no_anchors
+        self.no_mafft: bool = no_mafft
         self.ancestral_seq_dir: Union[click.Path, None] = path_to_ancestor_files
         self.seed: str = seed
         self.add_projection_names: bool = add_projection_names
@@ -677,6 +683,10 @@ class CodonAligner(CommandLineManager):
                         cmd += PRANK_FOR_ANCESTRAL
                         anc_fa = tmp_fasta_out_path + ".best.anc.fas"
                         anc_dnd = tmp_fasta_out_path + ".best.anc.dnd"
+                    if self.no_anchors:
+                        cmd += PRANK_NO_ANCHOR
+                    if self.no_mafft:
+                        cmd += PRANK_NO_MAFFT
                     else:
                         cmd += PRANK_FOR_REGULAR_ALN
                     tmp_fasta_out_path += ".best.fas"
@@ -833,6 +843,7 @@ class CodonAligner(CommandLineManager):
         )
         self._rm(ensemble_file)
 
+    ## Maybe update for pruning
     def prune_tree(self, species: List[str], postfix: str, dest: str) -> None:
         """Removes species listed in the `species` argument from the tree"""
         in_tree = Tree(self.tree, format=1)

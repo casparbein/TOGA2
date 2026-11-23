@@ -2378,6 +2378,24 @@ Relevant if PRANK aligner is selected""",
     help="""Coerces PRANK to output ancestral sequence reconstruction. 
 Does not work with other aligners.""",
 )
+
+@aligner_options.option(
+    "--no_anchors",
+    "-nex",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="""Disables exonerate anchor seeding in prank.""",
+)
+
+@aligner_options.option(
+    "--no_mafft",
+    "-nmaf",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="""disabled inital mafft alignment for NJ tree in prank.""",
+)
 @aligner_options.option(
     "--seed",
     type=str,
